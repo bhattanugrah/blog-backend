@@ -1,9 +1,15 @@
 import express from 'express'
 import { Blog, Users } from '../models/index'
 import jwt from 'jsonwebtoken'
+import JwtPayload from 'jsonwebtoken'
 import { SECRET } from '../utils/config'
 
 var router = express.Router()
+
+
+interface TokenPayload {
+    userId: string;
+  }
 
 
 router.get('/', async(req, res) => {
@@ -54,7 +60,7 @@ router.post('/', async(req, res) => {
     }
 
     const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, SECRET)
+    const decoded = jwt.verify(token, SECRET) as TokenPayload
     console.log(decoded)
 
     if(decoded.userId){                          
